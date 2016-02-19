@@ -1,0 +1,136 @@
+\documentclass[a4paper]{article}
+
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage{newunicodechar} 
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{pifont}
+\usepackage{listings}  
+\usepackage{array}
+\usepackage{multirow}
+%\usepackage{geometry}
+%\geometry{margin=1in}
+\usepackage{wrapfig}
+%\usepackage{lipsum}
+\usepackage[margin=1in]{geometry}
+\usepackage[square,sort,comma,numbers]{natbib}
+\usepackage[font=small,skip=3pt]{caption}
+\setlength{\bibsep}{0.0pt}
+%\usepackage{natbib}
+%\setlength{\bibsep}{0.1pt}
+%\graphicspath{ {/home/vuquangvinh/workspace/latex/mid-term/Images/} }
+\title{Detection and classification of the Acute Myeloid Leukemia cells in the images of white blood cells \\ Mid-term report}
+
+\author{Tran Van Nhan \\ Yoshitaka Lab \\ Japan Advanced Institute of Science and
+Technology}
+
+\date{\today}
+
+\begin{document}
+\maketitle
+
+
+
+\section{Introduction}
+\label{sec:introduction}
+In recent decades, image processing is applied to many applications of life. In particular, imaging applications are emerging as a new opportunity for innovation at the meeting point between medicine and computer
+science. By the help of image processing, we can extract many useful information from medical images in
+order to assist and improve patient diagnosis especially in the cancer area. Currently, with a blood cell image
+of leukemia patient, the process of detection and classification depends on human look and it takes up to a
+few days. The goal of this study is the development of an automate method for the detection and classification
+leukemia cells from the blood cells images that are captured as microscope images. It is a vital step in
+providing the correct form of treatment. Therefore, the diagnostic process is reduced in terms of its time span
+from a few days to a matter of a few hours and the cost of all processes.
+\section{Related work}
+Leukemia is a cancer of white blood cells, where the disease basically develops in the bone marrow, which is
+the spongy tissue that fills the inside region of the bones. There are four major different forms or types of
+leukemia, which develop in cancer patients according to the growth speed and the improper overproduction
+of leukemia cells: acute lymphocytic leukemia (ALL), acute myeloid leukemia (AML), chronic lymphocytic
+leukemia (CLL), chronic myeloid leukemia (CML) [1]. This research will focus on AML type. In AML the
+bone marrow makes large numbers of abnormal immature white blood cells. The immature cells are called as
+blast cells. \\
+Leukemia is a cancer of white blood cells, where the disease basically develops in the bone marrow, which is
+the spongy tissue that fills the inside region of the bones. There are four major different forms or types of
+leukemia, which develop in cancer patients according to the growth speed and the improper overproduction
+of leukemia cells: acute lymphocytic leukemia (ALL), acute myeloid leukemia (AML), chronic lymphocytic
+leukemia (CLL), chronic myeloid leukemia (CML) [1]. This research will focus on AML type. In AML the
+bone marrow makes large numbers of abnormal immature white blood cells. The immature cells are called as
+blast cells. \\
+The recognition of the blast cells in the bone marrow of the patients suffering from myeloid leukemia is a very
+important step. It is followed by categorizing into subtypes which will allow the proper treatment of the
+patients. In 1971, the diagnosis of leukemia cells was based on the morphology [2]. The whole process is
+currently manual in nature and thus is time consuming and exhausting. Nowadays, there are several research
+groups focusing on the development of image processing application for medical images that collaborates
+with the clinicians. \\
+From the images of blood smear microscope slides, the researchers have to detect and locate the AML cells.
+The image segmentation algorithms were used to solve this problem. In [3], the pixel-based segmentation via
+bi-modal thresholding was presented. M.D. Joshi, et al., proposed automatic Otsu’s threshold blood cell
+segmentation method along with image enhancement and arithmetic [4]. Both of above approach are used for
+segmentation ALL cells, which belong to Acute Leukemia type. For the AML cells, follow by W. Ismail, [5],
+the combination of Cellular Automata and Heuristic Search was applied. 
+\begin{table}[h!]
+		\centering	
+	\begin{tabular}{ | m{5em} | m{6cm}| m{5cm} | } 
+		\hline
+		& Related work & Our work \\ 
+		\hline
+		 & \multirow{3}{5cm}{- Distinguish between the AML cell and the white blood cell \\ - Detect the existence of the AML cells} &  \\ 		
+		 Goal &  & - Detect the AML cells \\ 
+		 & & - Classify the type of AML cells\\
+		 & & \\
+		\hline
+		Detection approach & image $\rightarrow$ segmentation $\rightarrow$ removing background & image $\rightarrow$ segmentation $\rightarrow$ separation $\rightarrow$ cropping\\
+		\hline
+		Method & - Identify the nuclei of the cell & - Identify all parts of the cell:  nuclei and cytoplasm\\
+		& - Don’t separate the connected cell & - Separate the connected cell\\
+		\hline		
+	\end{tabular}
+	\caption{The difference between the related work and our work.}
+\end{table}
+\vspace{-0.5cm}
+\section{Proposed system}
+Based on the analysis of the problem and the related work, we propose a system (Fig. 1). This system has two stage: detection and classification. 
+
+\begin{figure}[h]		
+	\centering
+	\label{fig:proposed}
+	\includegraphics[width=17cm]{proposedSystem.PNG}
+	\caption{The proposed system}		
+\end{figure}
+In detection stage, we will segment the AML cells from another components in the image like red blood cell, background. After that, we separate the connected AML cells. In classification, we segment the nuclei and the cytoplasm of AML cells. Then, we extract the features of AML cells. Finally, we apply these features to machine learning model for training and classifying the AML cells to 4 group M1, M2, M3, M5. In the additional work, after get the single AML cells, we will extract the features from it and use to train and test. The challenge of this stage is answer the question: "what are the features of AML cell should be extract to classify?" and "which is suitable for classifying?"
+\subsection{Detection stage}
+\begin{figure}[h]		
+	\centering
+	\label{fig:detection}
+	\includegraphics[width=16cm]{detectionMethod.PNG}
+	\caption{The diagram of detection stage}		
+\end{figure}
+There are 4 steps in detection stage: preprocessing, segmentation, separation and cropping. In the preprocessing step, the color space of input image is rgb space. In this step, we convert the rgb color space to CYMK space. In fact, AML cells are more contrasted in the Y component of CMYK colour model because the yellow colour is present in all elements of the image, except AML cells. As you can see in the Y component image (Fig. 3), the contrast between AML cells and another is clearly. With this conversion, we can segment easily the AML cells from the input image. After conversion the color space, we redistribute the Y component image to grey level. Then, Otsu threshold method is applied and the result like in the image. The Otsu threshold method based on the simple idea is find the threshold that minimizes the weighted within-class variance.
+There are many hold inside the object and we have to fill these hole. The image will be refined. As I mentioned before, in this study, we foucus on classifying the AML cells, so we have to separate the connected cell. This step will help us extract the features more effectively. In this study, different from the original watershed algorithm which use the contrast (which is irrelevant), the criterion used is the distance function of the initial image. After use watershed algorithm, we have the cutting line between the connected cells. The distance transforms of a binary image is the distance from every pixel of the object component which is black pixels to the nearest white pixel.
+In this step, we will remove some noises and get the single AML cells. After analysis by using connected component, we will set a filter, which apply condition based on the shape, size of AML cells to eliminate all unnecessary object.
+\begin{figure}[h]		
+	\centering
+	\label{fig:image}
+	\includegraphics[width=16cm]{resultIlusitrade.PNG}
+	\caption{From left to right: input image, Y component image, apply otsu method and refinement, result after separating, single AML cells are cropped from input image}		
+\end{figure}
+\section{Next work}
+In the future, we build the ground-truth for dataset. A tool is build by our to build the ground-truth. After that, we can test and have the result when running the proposed detection. By analysis the wrong case, we can improve the proposed detection stage. The next stage of proposed system is classification. In this stage, firstly, we have to segment the nuclei and the cytoplasm. The information contain in cytoplasm and nuclei is very useful for training and classifying. We have to analysis all the features and choose the most useful ones. The machine learning model will be used in this step for training and testing. There are many machine learning models and we select one based on the accuracy of testing. Finally, with the ground-truth, we build a system to measure the result and when the result is right. After that, we evaluate the result of all proposed system.  
+
+\begin{thebibliography}{9}
+\bibitem{1}C. Haworth, A. Heppleston, M. Jones, et al., Routine bone inarrow examination in the management of acute lymphoblastic leukeamia of childhood, J Clin Pathol, 1981.
+\bibitem{2}R., Hassan, Diagnosis and outcome of patients with Acute Leukemia, In: Haemotology department, University Sains Malaysia, Malaysia, 1996.
+\bibitem{3}A. Khashman, E. Al-Zgoul, Image Segmentation of Blood Cells in Leukemia Patients, CEA, 2010.
+\bibitem{4}D. Goutam, S.Sailaja, Classification of Acute Myelogenous Leukemia in Blood Microscopic Images using Supervised Classifier, ICETECH, 2015.
+\bibitem{5}S. Again, M. Madhukar, A.T. Chronopoulos, Automated Screening System for Acute Myelogenous Leukemia Detection in Blood Microscopic Images, IEEE Systems journal, 2014.
+\bibitem{6}A.K. Varghese , S.J.Nisha, Automated Screening System for Acute Myelogenous Leukemia Detection using Layer Subtraction , IJCET, 2015.
+\bibitem{7}W. Ismail, R. Hassan, et al., Detecting Leukaemia (AML) Blood Cells Using Cellular Automata and Heuristic Search, IDA, 2010.
+
+\end{thebibliography}
+\end{document}
+              
+            
