@@ -2,7 +2,7 @@ clear all;
 close all;
 MODE_DEBUG_IMSHOW = false;
 MODE_WRITE_IMAGE = true;
-VERSION_CODE = '101\';
+VERSION_CODE = 'TestBeforeSeparate_v0001\';
 FOLDER_RESULT = 'C:\Users\Nhan\Desktop\JAIST\Master\Database\Result\';
 LIST_DATA_TYPE = {'M1\','M2\','M3\','M5\'};
 FOLDER_DATA = 'C:\Users\Nhan\Desktop\JAIST\Master\Database\AML_Nomarlization\';
@@ -13,8 +13,10 @@ FOLDER_DATA = 'C:\Users\Nhan\Desktop\JAIST\Master\Database\AML_Nomarlization\';
 %   - change the filtering
 %       + area of object
 %       + position connected to boundary of image
+%version 110:
 
-
+%TestBeforeSeparate_v0001
+%   - change the value of threshold ratio to 4
 %% create folder for keeping the result
 for runType=1:length(LIST_DATA_TYPE)
     CURRENT_DATA = LIST_DATA_TYPE{runType}
@@ -65,11 +67,10 @@ for runType=1:length(LIST_DATA_TYPE)
         ShowDebug(MODE_DEBUG_IMSHOW, filled);
         WriteImage(MODE_WRITE_IMAGE, filled, strcat(FOLDER_RESULT_CURRENT,name,'\_03_fillHole','.JPG'));
         
-        %% watershed algorithm
-        img = SeparateConnectedCell(filled);
+        
         
         %% CCA algorithm
-        inputI = img;
+        inputI = filled;
         cc = bwconncomp(inputI,4);
         % use for debuging
         labeled = labelmatrix(cc);
@@ -100,6 +101,10 @@ for runType=1:length(LIST_DATA_TYPE)
         
         ShowDebug(MODE_DEBUG_IMSHOW, initalImage);
         WriteImage(MODE_WRITE_IMAGE, initalImage, strcat(FOLDER_RESULT_CURRENT,name,'\_06_binary-result','.JPG'));
+        
+%         %% watershed algorithm
+%         img = SeparateConnectedCell(filled);
+        
         
         figure();
         imshow(I)

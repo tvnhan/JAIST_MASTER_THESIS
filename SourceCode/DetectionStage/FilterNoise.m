@@ -16,7 +16,8 @@ function [ resultIndexArr ] = FilterNoise( featureData, cc, maxColumn, maxRow )
         end
     end
     
-    threshold = max(lsArrayArea)/3;
+    % TestBeforeSeparate_v0001, change from 3 to 4
+    threshold = max(lsArrayArea)/4;
     for k = 1:length(resultIndexArrTemp)
         indexBinary = resultIndexArrTemp{k};
         area = featureData(indexBinary).Area;
@@ -26,8 +27,8 @@ function [ resultIndexArr ] = FilterNoise( featureData, cc, maxColumn, maxRow )
             minPos = min(min(lsPixel));
             maxColumnPos = max(lsPixel(:,1));
             maxRowPos = max(lsPixel(:,end));
-            threshold = 5;
-            if (minPos>5 && (maxColumn-maxColumnPos)>5 && (maxRow-maxRowPos)>5)
+            thresholdPos = 5;
+            if (minPos>thresholdPos && (maxColumn-maxColumnPos)>thresholdPos && (maxRow-maxRowPos)>thresholdPos)
                 idex = length(resultIndexArr)+1;
                 resultIndexArr{idex} = indexBinary;
             end

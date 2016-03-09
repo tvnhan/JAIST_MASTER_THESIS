@@ -6,7 +6,7 @@ CURRENT_DATA = 'M1\';
 FOLDER_DATA = 'C:\Users\Nhan\Desktop\JAIST\Master\Database\AML_Nomarlization\';
 FOLDER_RESULT_CURRENT ='C:\Users\Nhan\Desktop\DEBUG\';
      %% show grey-images
-     filename = 'M1_002.tif';
+     filename = 'M1_034.tif';
      % get the component of image
      [pathstr, name, ext] = fileparts(filename);
      % display current image which is processing
@@ -24,7 +24,6 @@ FOLDER_RESULT_CURRENT ='C:\Users\Nhan\Desktop\DEBUG\';
      WriteImage(MODE_WRITE_IMAGE, Igraysc, strcat(FOLDER_RESULT_CURRENT,name,'\_01_Igraysc','.JPG'));
 
     %% convert to CMYK
-
     Igray = ConversionToCMYK(I);
 
     ShowDebug(MODE_DEBUG_IMSHOW, Igray);
@@ -42,11 +41,11 @@ FOLDER_RESULT_CURRENT ='C:\Users\Nhan\Desktop\DEBUG\';
     ShowDebug(MODE_DEBUG_IMSHOW, filled);
     WriteImage(MODE_WRITE_IMAGE, filled, strcat(FOLDER_RESULT_CURRENT,name,'\_03_fillHole','.JPG'));
     
-    %% watershed algorithm
-    img = SeparateConnectedCell(filled);
+%     %% watershed algorithm
+%     img = SeparateConnectedCell(filled);
 
     %% CCA algorithm
-    inputI = img;
+    inputI = filled;
     cc = bwconncomp(inputI,4);
     % use for debuging
     labeled = labelmatrix(cc);
@@ -61,7 +60,7 @@ FOLDER_RESULT_CURRENT ='C:\Users\Nhan\Desktop\DEBUG\';
     [X Y Z] = size(I);  % X: number of row, Y:number of column
     % inital image has zero pixels
     initalImage = false(size(Igray));
-    filteredArr = FilterNoise(featureData, cc, X, Y);
+    filteredArr = FilterNoise(featureData, cc, Y, X);
     for k=1:length(filteredArr)
         j= filteredArr{k};
         area = featureData(j).Area;
