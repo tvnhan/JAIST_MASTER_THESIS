@@ -79,7 +79,7 @@ FOLDER_RESULT_CURRENT ='C:\Users\Nhan\Desktop\DEBUG\';
 %     img = SeparateConnectedCell(filled);
 
     %% CCA algorithm
-    inputI = Ifilled;
+    inputI = filled;
     cc = bwconncomp(inputI,4);
     % use for debuging
     labeled = labelmatrix(cc);

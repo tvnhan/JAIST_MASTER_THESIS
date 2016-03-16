@@ -16,6 +16,7 @@ function [ resultIndexArr ] = FilterNoise( featureData, cc, maxColumn, maxRow )
         end
     end
     
+    % v1001: value is 3
     % TestBeforeSeparate_v0001, change from 3 to 4
     threshold = max(lsArrayArea)/4;
     for k = 1:length(resultIndexArrTemp)

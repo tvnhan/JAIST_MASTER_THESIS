@@ -2,18 +2,21 @@ clear all;
 close all;
 MODE_DEBUG_IMSHOW = false;
 MODE_WRITE_IMAGE = true;
-VERSION_CODE = 'TestBeforeSeparate_v0001\';
+% VERSION_CODE = 'TestBeforeSeparate_v0001\';
+VERSION_CODE = '2001\';
 FOLDER_RESULT = 'C:\Users\Nhan\Desktop\JAIST\Master\Database\Result\';
 LIST_DATA_TYPE = {'M1\','M2\','M3\','M5\'};
 FOLDER_DATA = 'C:\Users\Nhan\Desktop\JAIST\Master\Database\AML_Nomarlization\';
 
 
 %% Note for the changing of code
-%version 101:
+%version 1001:
 %   - change the filtering
 %       + area of object
 %       + position connected to boundary of image
-%version 110:
+%version 2000:
+%   - add sobel filter
+%   - Or sobel and otsu
 
 %TestBeforeSeparate_v0001
 %   - change the value of threshold ratio to 4
@@ -67,10 +70,25 @@ for runType=1:length(LIST_DATA_TYPE)
         ShowDebug(MODE_DEBUG_IMSHOW, filled);
         WriteImage(MODE_WRITE_IMAGE, filled, strcat(FOLDER_RESULT_CURRENT,name,'\_03_fillHole','.JPG'));
         
+                
+%         %% watershed algorithm
+%         img = SeparateConnectedCell(filled);
         
         
+        %% sobel process
+        Isobel = edge(Igray,'sobel');
+        ShowDebug(MODE_DEBUG_IMSHOW, Isobel);
+        WriteImage(MODE_WRITE_IMAGE, Isobel, strcat(FOLDER_RESULT_CURRENT,name,'\_031_sobel','.JPG'));
+         %% Iotsu Or Isobel lai voi nhau
+         Ior = bitor(filled,Isobel);
+         ShowDebug(MODE_DEBUG_IMSHOW, Ior);
+         WriteImage(MODE_WRITE_IMAGE, Ior, strcat(FOLDER_RESULT_CURRENT,name,'\_032_or','.JPG'));
+         Ifilled = RefinementImage(Ior);
+         ShowDebug(MODE_DEBUG_IMSHOW, Ifilled);
+         WriteImage(MODE_WRITE_IMAGE, Ifilled, strcat(FOLDER_RESULT_CURRENT,name,'\_033_or_filled','.JPG'));
+         
         %% CCA algorithm
-        inputI = filled;
+        inputI = Ifilled;
         cc = bwconncomp(inputI,4);
         % use for debuging
         labeled = labelmatrix(cc);
